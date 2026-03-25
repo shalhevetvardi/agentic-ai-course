@@ -49,45 +49,11 @@ body::after{
   border-radius:4px;
 }
 
-/* NAV — floating */
-nav{
-  position:fixed;top:10px;left:16px;right:16px;z-index:100;
-  background:rgba(15,23,42,0.85);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:16px;
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  padding:14px 28px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.nav-logo{display:flex;align-items:center;gap:14px}
-.nav-brand{
-  font-size:24px;font-weight:700;color:#fff;
-  letter-spacing:-0.5px;
-}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-links a{
-  color:var(--text-muted);font-size:14px;text-decoration:none;font-weight:400;
-  transition:color .2s;cursor:pointer;
-}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.15);
-  color:var(--text) !important;font-weight:500;font-size:14px;
-  padding:10px 24px;border-radius:12px;
-  transition:all .3s;cursor:pointer;
-}
-.nav-cta:hover{
-  background:rgba(37,211,102,0.15);border-color:rgba(37,211,102,0.3);
-  color:#fff !important;box-shadow:0 0 20px rgba(37,211,102,0.1);
-}
-.nav-cta:active{background:rgba(37,211,102,0.2)}
-
 /* HERO */
 .hero{
   min-height:100vh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:130px 24px 80px;
+  text-align:center;padding:80px 24px 80px;
   position:relative;
   overflow:hidden;
 }
@@ -663,16 +629,8 @@ footer p{
 /* ═══════════ RESPONSIVE ═══════════ */
 
 @media(max-width:768px){
-  nav{
-    padding:10px 16px;
-    top:6px;left:10px;right:10px;
-  }
-  .nav-brand{font-size:20px}
-  .nav-links{gap:14px}
-  .nav-cta{padding:8px 16px;font-size:13px}
-
   .hero{
-    padding:110px 20px 60px;
+    padding:80px 20px 60px;
     min-height:auto;
   }
   .hero-logos{gap:18px;margin-bottom:36px}
@@ -747,11 +705,7 @@ footer p{
 }
 
 @media(max-width:420px){
-  nav{padding:8px 12px;border-radius:12px}
-  .nav-brand{font-size:18px}
-  nav{display:none}
-
-  .hero{padding:100px 16px 48px}
+  .hero{padding:72px 16px 48px}
   .hero-logos{gap:14px;margin-bottom:28px}
   .hero-logos .aimprove-logo,
   .claude-logo-img{height:80px}
@@ -797,15 +751,6 @@ footer p{
 </style>
 </head>
 <body>
-
-<!-- NAV — floating -->
-<nav>
-  <div class="nav-logo">
-  </div>
-  <div class="nav-links">
-    <a href="#">הקורס</a>
-  </div>
-</nav>
 
 <!-- HERO -->
 <section class="hero">
@@ -1099,8 +1044,7 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
   const timeline = document.querySelector('.timeline');
   const ripple = document.getElementById('click-ripple-hint');
   if (!timeline || !ripple) return;
-  const lastPlayedAt = new WeakMap();
-  const REPLAY_COOLDOWN_MS = 7000;
+  const played = new WeakSet();
 
   function playRippleClick(el, cb) {
     const rect = el.getBoundingClientRect();
@@ -1121,7 +1065,7 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
   function runSequence(terms, idx) {
     if (idx >= terms.length) return;
     playRippleClick(terms[idx], () => {
-      setTimeout(() => runSequence(terms, idx + 1), 300);
+      setTimeout(() => runSequence(terms, idx + 1), 500);
     });
   }
 
@@ -1129,14 +1073,12 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       const part = entry.target;
-      const now = Date.now();
-      const prev = lastPlayedAt.get(part) || 0;
-      if (now - prev < REPLAY_COOLDOWN_MS) return;
-      lastPlayedAt.set(part, now);
-      const terms = Array.from(part.querySelectorAll('.has-tooltip'));
+      if (played.has(part)) return;
+      played.add(part);
+      const terms = Array.from(part.querySelectorAll('.has-tooltip')).slice(0, 4);
       if (!terms.length) return;
       ripple.classList.remove('active');
-      setTimeout(() => runSequence(terms, 0), 280);
+      setTimeout(() => runSequence(terms, 0), 800);
     });
   }, {threshold: 0.25, rootMargin: '0px 0px -50px 0px'});
 
