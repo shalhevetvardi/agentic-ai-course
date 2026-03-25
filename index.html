@@ -1095,12 +1095,12 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
   });
 })();
 
-// CLICK HINT — ripple click visits tooltip terms when timeline enters view
+// CLICK HINT — ripple click on each timeline part when it enters view
 (function(){
   const timeline = document.querySelector('.timeline');
   const ripple = document.getElementById('click-ripple-hint');
   if (!timeline || !ripple) return;
-  let fired = false;
+  const played = new WeakSet();
 
   function playRippleClick(el, cb) {
     const rect = el.getBoundingClientRect();
@@ -1125,15 +1125,22 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
     });
   }
 
-  const hintObs = new IntersectionObserver((entries) => {
-    if (fired || !entries[0].isIntersecting) return;
-    fired = true;
-    const terms = Array.from(timeline.querySelectorAll('.has-tooltip')).slice(0, 4);
-    ripple.classList.remove('active');
-    setTimeout(() => runSequence(terms, 0), 1000);
-    hintObs.disconnect();
-  }, {threshold: 0.25});
-  hintObs.observe(timeline);
+  const partObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const part = entry.target;
+      if (played.has(part)) return;
+      played.add(part);
+      const terms = Array.from(part.querySelectorAll('.has-tooltip'));
+      if (!terms.length) return;
+      ripple.classList.remove('active');
+      setTimeout(() => runSequence(terms, 0), 450);
+    });
+  }, {threshold: 0.35, rootMargin: '0px 0px -80px 0px'});
+
+  timeline.querySelectorAll('.tl-item').forEach((item) => {
+    if (item.querySelector('.has-tooltip')) partObs.observe(item);
+  });
 })();
 
 // Prevent pinch zoom (iOS ignores CSS user-scalable)
