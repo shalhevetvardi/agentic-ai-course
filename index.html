@@ -545,6 +545,34 @@ nav{
   pointer-events:auto;
 }
 #tooltip-bubble.visible{display:block}
+
+/* On mobile — tooltip becomes a full-width bottom sheet */
+@media(max-width:768px){
+  #tooltip-bubble{
+    bottom:0 !important;
+    top:auto !important;
+    left:0 !important;
+    right:0 !important;
+    max-width:100%;
+    min-width:100%;
+    border-radius:18px 18px 0 0;
+    border-left:none;border-right:none;border-bottom:none;
+    border-top:1px solid rgba(56,130,220,0.3);
+    padding:20px 24px 44px;
+    transform:translateY(0);
+    background:rgba(10,18,35,0.99);
+    box-shadow:0 -4px 40px rgba(0,0,0,0.7);
+  }
+  #tooltip-bubble .tooltip-close{
+    top:14px;left:14px;
+    font-size:20px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  #tooltip-bubble .tooltip-term{font-size:13px;margin-bottom:8px}
+  #tooltip-bubble .tooltip-text{font-size:15px;line-height:1.7}
+}
 .tooltip-term{
   font-size:12px;font-weight:700;
   color:rgba(56,130,220,0.85);
@@ -1002,6 +1030,17 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
   });
 })();
 
+// Prevent pinch zoom (iOS ignores CSS user-scalable)
+document.addEventListener('touchstart', function(e) {
+  if (e.touches.length > 1) e.preventDefault();
+}, {passive: false});
+let _lastTouchEnd = 0;
+document.addEventListener('touchend', function(e) {
+  const now = Date.now();
+  if (now - _lastTouchEnd <= 300) e.preventDefault();
+  _lastTouchEnd = now;
+}, false);
+
 // TOOLTIP — click to open/close
 (function(){
   const bubble = document.getElementById('tooltip-bubble');
@@ -1023,6 +1062,7 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
   }
 
   function positionTooltip(el) {
+    if (window.innerWidth <= 768) return; // mobile: bottom sheet, no positioning needed
     const rect = el.getBoundingClientRect();
     const bw = bubble.offsetWidth || 280;
     const bh = bubble.offsetHeight || 100;
