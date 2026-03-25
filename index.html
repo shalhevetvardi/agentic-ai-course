@@ -534,6 +534,16 @@ nav{
 }
 .has-tooltip:hover{color:rgba(56,130,220,1);border-color:rgba(56,130,220,0.9)}
 
+@keyframes tooltip-hint{
+  0%   { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); }
+  35%  { color:rgba(100,180,255,1); border-bottom-color:rgba(100,180,255,1); transform:scale(1.07); text-shadow:0 0 10px rgba(56,130,220,0.5); }
+  100% { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); }
+}
+.has-tooltip.hint-pulse{
+  animation: tooltip-hint 0.55s ease-in-out;
+  display:inline-block;
+}
+
 #tooltip-bubble{
   display:none;
   position:fixed;
@@ -1038,6 +1048,26 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
       tile.style.setProperty('--spot-color', 'rgba(80,150,230,0)');
     });
   });
+})();
+
+// HINT ANIMATION — pulse each .has-tooltip once when timeline scrolls into view
+(function(){
+  const timeline = document.querySelector('.timeline');
+  if (!timeline) return;
+  let fired = false;
+  const hintObs = new IntersectionObserver((entries) => {
+    if (fired || !entries[0].isIntersecting) return;
+    fired = true;
+    const terms = timeline.querySelectorAll('.has-tooltip');
+    terms.forEach((el, i) => {
+      setTimeout(() => {
+        el.classList.add('hint-pulse');
+        el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
+      }, i * 70 + 400);
+    });
+    hintObs.disconnect();
+  }, {threshold: 0.2});
+  hintObs.observe(timeline);
 })();
 
 // Prevent pinch zoom (iOS ignores CSS user-scalable)
