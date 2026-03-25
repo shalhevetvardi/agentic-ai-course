@@ -535,12 +535,13 @@ nav{
 .has-tooltip:hover{color:rgba(56,130,220,1);border-color:rgba(56,130,220,0.9)}
 
 @keyframes tooltip-hint{
-  0%   { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); }
-  35%  { color:rgba(100,180,255,1); border-bottom-color:rgba(100,180,255,1); transform:scale(1.07); text-shadow:0 0 10px rgba(56,130,220,0.5); }
-  100% { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); }
+  0%   { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); text-shadow:none; }
+  30%  { color:rgba(125,200,255,1); border-bottom-color:rgba(125,200,255,1); transform:scale(1.1); text-shadow:0 0 14px rgba(56,130,220,0.65); }
+  60%  { color:rgba(125,200,255,1); border-bottom-color:rgba(125,200,255,1); transform:scale(1.06); text-shadow:0 0 10px rgba(56,130,220,0.45); }
+  100% { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); text-shadow:none; }
 }
 .has-tooltip.hint-pulse{
-  animation: tooltip-hint 0.55s ease-in-out;
+  animation: tooltip-hint 0.9s ease-in-out;
   display:inline-block;
 }
 
@@ -1099,7 +1100,8 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
   const timeline = document.querySelector('.timeline');
   const ripple = document.getElementById('click-ripple-hint');
   if (!timeline || !ripple) return;
-  const played = new WeakSet();
+  const lastPlayedAt = new WeakMap();
+  const REPLAY_COOLDOWN_MS = 7000;
 
   function playRippleClick(el, cb) {
     const rect = el.getBoundingClientRect();
@@ -1111,6 +1113,13 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
     ripple.classList.add('active');
     el.classList.add('hint-pulse');
     el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
+    // Second pulse pass to make interaction affordance obvious.
+    setTimeout(() => {
+      el.classList.remove('hint-pulse');
+      void el.offsetWidth;
+      el.classList.add('hint-pulse');
+      el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
+    }, 260);
     setTimeout(() => {
       ripple.classList.remove('active');
       if (cb) cb();
@@ -1128,14 +1137,16 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       const part = entry.target;
-      if (played.has(part)) return;
-      played.add(part);
+      const now = Date.now();
+      const prev = lastPlayedAt.get(part) || 0;
+      if (now - prev < REPLAY_COOLDOWN_MS) return;
+      lastPlayedAt.set(part, now);
       const terms = Array.from(part.querySelectorAll('.has-tooltip'));
       if (!terms.length) return;
       ripple.classList.remove('active');
-      setTimeout(() => runSequence(terms, 0), 450);
+      setTimeout(() => runSequence(terms, 0), 280);
     });
-  }, {threshold: 0.35, rootMargin: '0px 0px -80px 0px'});
+  }, {threshold: 0.25, rootMargin: '0px 0px -50px 0px'});
 
   timeline.querySelectorAll('.tl-item').forEach((item) => {
     if (item.querySelector('.has-tooltip')) partObs.observe(item);
