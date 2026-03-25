@@ -544,6 +544,32 @@ nav{
   display:inline-block;
 }
 
+/* Click cursor hint */
+@keyframes cursor-arrive{
+  0%   { opacity:0; transform:rotate(-15deg) scale(0.6) translate(-10px,-12px); }
+  30%  { opacity:1; transform:rotate(-15deg) scale(1) translate(0,0); }
+  100% { opacity:1; transform:rotate(-15deg) scale(1) translate(0,0); }
+}
+@keyframes cursor-click{
+  0%,100% { transform:rotate(-15deg) scale(1); }
+  40%     { transform:rotate(-15deg) scale(0.78) translate(1px,2px); }
+}
+@keyframes cursor-leave{
+  0%   { opacity:1; transform:rotate(-15deg) scale(1); }
+  100% { opacity:0; transform:rotate(-15deg) scale(0.7) translate(6px,8px); }
+}
+#click-cursor-hint{
+  position:fixed;
+  pointer-events:none;
+  z-index:999997;
+  width:28px;
+  height:28px;
+  display:none;
+}
+#click-cursor-hint.arriving { display:block; animation: cursor-arrive 0.35s ease-out forwards; }
+#click-cursor-hint.clicking { display:block; animation: cursor-click 0.25s ease-in-out; }
+#click-cursor-hint.leaving  { display:block; animation: cursor-leave 0.25s ease-in forwards; }
+
 #tooltip-bubble{
   display:none;
   position:fixed;
@@ -951,6 +977,16 @@ footer p{
   <p>© 2026 אִימפּרוּב. כל הזכויות שמורות.</p>
 </footer>
 
+<!-- CLICK CURSOR HINT -->
+<div id="click-cursor-hint">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5.5 3.5v11.25l2.75-2.75h7L9.5 20.5l-1.5-4H5.5" stroke="none"/>
+    <path d="M6 4v10l2.5-2.5h6.5l-5.5 8-1.5-4H6" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="rgba(56,130,220,0.9)"/>
+    <path d="M6 4v10l2.5-2.5h6.5l-5.5 8-1.5-4H6Z" fill="white" opacity="0.95"/>
+    <path d="M7.5 5.5V13l1.8-1.8h5L9.8 18l-1-2.8H7.5" fill="rgba(30,60,120,0.85)"/>
+  </svg>
+</div>
+
 <!-- TOOLTIP BACKDROP (mobile) -->
 <div id="tooltip-backdrop"></div>
 <!-- TOOLTIP BUBBLE -->
@@ -1050,23 +1086,44 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
   });
 })();
 
-// HINT ANIMATION — pulse each .has-tooltip once when timeline scrolls into view
+// CLICK HINT — cursor visits each has-tooltip term when timeline enters view
 (function(){
   const timeline = document.querySelector('.timeline');
-  if (!timeline) return;
+  const cursor = document.getElementById('click-cursor-hint');
+  if (!timeline || !cursor) return;
   let fired = false;
+
+  function moveCursorTo(el, cb) {
+    const rect = el.getBoundingClientRect();
+    cursor.style.left = (rect.left + rect.width * 0.3 - 14) + 'px';
+    cursor.style.top  = (rect.top - 18) + 'px';
+    cursor.className = 'arriving';
+    setTimeout(() => {
+      cursor.className = 'clicking';
+      el.classList.add('hint-pulse');
+      el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
+      setTimeout(() => {
+        cursor.className = 'leaving';
+        setTimeout(() => { cursor.className = ''; cursor.style.display = 'none'; if(cb) cb(); }, 280);
+      }, 350);
+    }, 380);
+  }
+
+  function runSequence(terms, idx) {
+    if (idx >= terms.length) return;
+    moveCursorTo(terms[idx], () => {
+      setTimeout(() => runSequence(terms, idx + 1), 180);
+    });
+  }
+
   const hintObs = new IntersectionObserver((entries) => {
     if (fired || !entries[0].isIntersecting) return;
     fired = true;
-    const terms = timeline.querySelectorAll('.has-tooltip');
-    terms.forEach((el, i) => {
-      setTimeout(() => {
-        el.classList.add('hint-pulse');
-        el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
-      }, i * 70 + 400);
-    });
+    const terms = Array.from(timeline.querySelectorAll('.has-tooltip')).slice(0, 4);
+    cursor.style.display = 'none';
+    setTimeout(() => runSequence(terms, 0), 600);
     hintObs.disconnect();
-  }, {threshold: 0.2});
+  }, {threshold: 0.25});
   hintObs.observe(timeline);
 })();
 
