@@ -551,20 +551,21 @@ nav{
   100% { opacity:1; transform:rotate(-15deg) scale(1) translate(0,0); }
 }
 @keyframes cursor-click{
-  0%,100% { transform:rotate(-15deg) scale(1); }
-  40%     { transform:rotate(-15deg) scale(0.78) translate(1px,2px); }
+  0%,100% { transform:scale(1); }
+  40%     { transform:scale(0.78) translate(1px,2px); }
 }
 @keyframes cursor-leave{
-  0%   { opacity:1; transform:rotate(-15deg) scale(1); }
-  100% { opacity:0; transform:rotate(-15deg) scale(0.7) translate(6px,8px); }
+  0%   { opacity:1; transform:scale(1); }
+  100% { opacity:0; transform:scale(0.7) translate(6px,8px); }
 }
 #click-cursor-hint{
   position:fixed;
   pointer-events:none;
   z-index:999997;
-  width:28px;
-  height:28px;
+  font-size:30px;
+  line-height:1;
   display:none;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.6));
 }
 #click-cursor-hint.arriving { display:block; animation: cursor-arrive 0.35s ease-out forwards; }
 #click-cursor-hint.clicking { display:block; animation: cursor-click 0.25s ease-in-out; }
@@ -689,8 +690,7 @@ footer p{
     grid-template-columns:repeat(4,1fr);
     max-width:400px;
     gap:10px;
-  }
-  .spotlight-tile{padding:14px;border-radius:14px}
+  }  .spotlight-tile{padding:14px;border-radius:14px}
 
   .vision-text-below p{font-size:16px}
 
@@ -754,10 +754,12 @@ footer p{
   .chat-avatar{width:28px;height:28px;min-width:28px;font-size:12px}
 
   .spotlight-grid{
-    grid-template-columns:repeat(2,1fr);
-    max-width:280px;
-    gap:8px;
+    grid-template-columns:repeat(4,1fr);
+    max-width:400px;
+    gap:10px;
   }
+
+
   .spotlight-tile{padding:12px;border-radius:12px}
 
   .timeline{padding-right:40px}
@@ -978,14 +980,7 @@ footer p{
 </footer>
 
 <!-- CLICK CURSOR HINT -->
-<div id="click-cursor-hint">
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5.5 3.5v11.25l2.75-2.75h7L9.5 20.5l-1.5-4H5.5" stroke="none"/>
-    <path d="M6 4v10l2.5-2.5h6.5l-5.5 8-1.5-4H6" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="rgba(56,130,220,0.9)"/>
-    <path d="M6 4v10l2.5-2.5h6.5l-5.5 8-1.5-4H6Z" fill="white" opacity="0.95"/>
-    <path d="M7.5 5.5V13l1.8-1.8h5L9.8 18l-1-2.8H7.5" fill="rgba(30,60,120,0.85)"/>
-  </svg>
-</div>
+<div id="click-cursor-hint">👆</div>
 
 <!-- TOOLTIP BACKDROP (mobile) -->
 <div id="tooltip-backdrop"></div>
@@ -1121,7 +1116,7 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
     fired = true;
     const terms = Array.from(timeline.querySelectorAll('.has-tooltip')).slice(0, 4);
     cursor.style.display = 'none';
-    setTimeout(() => runSequence(terms, 0), 600);
+    setTimeout(() => runSequence(terms, 0), 1000);
     hintObs.disconnect();
   }, {threshold: 0.25});
   hintObs.observe(timeline);
