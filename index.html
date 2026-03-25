@@ -535,13 +535,12 @@ nav{
 .has-tooltip:hover{color:rgba(56,130,220,1);border-color:rgba(56,130,220,0.9)}
 
 @keyframes tooltip-hint{
-  0%   { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); text-shadow:none; }
-  30%  { color:rgba(125,200,255,1); border-bottom-color:rgba(125,200,255,1); transform:scale(1.1); text-shadow:0 0 14px rgba(56,130,220,0.65); }
-  60%  { color:rgba(125,200,255,1); border-bottom-color:rgba(125,200,255,1); transform:scale(1.06); text-shadow:0 0 10px rgba(56,130,220,0.45); }
-  100% { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); text-shadow:none; }
+  0%   { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); }
+  35%  { color:rgba(100,180,255,1); border-bottom-color:rgba(100,180,255,1); transform:scale(1.05); text-shadow:0 0 10px rgba(56,130,220,0.4); }
+  100% { color:inherit; border-bottom-color:rgba(56,130,220,0.4); transform:scale(1); }
 }
 .has-tooltip.hint-pulse{
-  animation: tooltip-hint 0.9s ease-in-out;
+  animation: tooltip-hint 0.6s ease-in-out;
   display:inline-block;
 }
 
@@ -1113,23 +1112,16 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
     ripple.classList.add('active');
     el.classList.add('hint-pulse');
     el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
-    // Second pulse pass to make interaction affordance obvious.
-    setTimeout(() => {
-      el.classList.remove('hint-pulse');
-      void el.offsetWidth;
-      el.classList.add('hint-pulse');
-      el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
-    }, 260);
     setTimeout(() => {
       ripple.classList.remove('active');
       if (cb) cb();
-    }, 780);
+    }, 900);
   }
 
   function runSequence(terms, idx) {
     if (idx >= terms.length) return;
     playRippleClick(terms[idx], () => {
-      setTimeout(() => runSequence(terms, idx + 1), 140);
+      setTimeout(() => runSequence(terms, idx + 1), 300);
     });
   }
 
