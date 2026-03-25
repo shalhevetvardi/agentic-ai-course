@@ -21,6 +21,7 @@
   --focus-ring:rgba(80,150,230,0.5);
 }
 html{scroll-behavior:smooth}
+html{overflow-x:hidden}
 body{
   font-family:'Rubik',sans-serif;
   background:var(--bg);
@@ -28,7 +29,7 @@ body{
   background-attachment:fixed;
   color:var(--text);
   direction:rtl;
-  overflow-x:hidden;
+  overflow-x:clip;
   line-height:1.7;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
@@ -88,6 +89,7 @@ nav{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:130px 24px 80px;
   position:relative;
+  overflow:hidden;
 }
 .hero-glow{
   position:absolute;top:8%;left:50%;transform:translateX(-50%);
@@ -535,7 +537,7 @@ nav{
 #tooltip-bubble{
   display:none;
   position:fixed;
-  z-index:9999;
+  z-index:999999;
   max-width:280px;min-width:200px;
   background:rgba(15,23,40,0.97);
   border:1px solid rgba(56,130,220,0.35);
@@ -547,6 +549,13 @@ nav{
 #tooltip-bubble.visible{display:block}
 
 /* On mobile — tooltip becomes a full-width bottom sheet */
+#tooltip-backdrop{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.5);
+  z-index:999998;
+}
+#tooltip-backdrop.visible{display:block}
 @media(max-width:768px){
   #tooltip-bubble{
     bottom:0 !important;
@@ -933,6 +942,8 @@ footer p{
   <p>© 2026 אִימפּרוּב. כל הזכויות שמורות.</p>
 </footer>
 
+<!-- TOOLTIP BACKDROP (mobile) -->
+<div id="tooltip-backdrop"></div>
 <!-- TOOLTIP BUBBLE -->
 <div id="tooltip-bubble">
   <button class="tooltip-close" aria-label="סגור">×</button>
@@ -1044,6 +1055,7 @@ document.addEventListener('touchend', function(e) {
 // TOOLTIP — click to open/close
 (function(){
   const bubble = document.getElementById('tooltip-bubble');
+  const backdrop = document.getElementById('tooltip-backdrop');
   let activeTarget = null;
 
   function showTooltip(el) {
@@ -1052,12 +1064,14 @@ document.addEventListener('touchend', function(e) {
     bubble.querySelector('.tooltip-term').textContent = term;
     bubble.querySelector('.tooltip-text').textContent = def;
     bubble.classList.add('visible');
+    if (window.innerWidth <= 768) backdrop.classList.add('visible');
     activeTarget = el;
     positionTooltip(el);
   }
 
   function hideTooltip() {
     bubble.classList.remove('visible');
+    backdrop.classList.remove('visible');
     activeTarget = null;
   }
 
@@ -1089,8 +1103,9 @@ document.addEventListener('touchend', function(e) {
   });
 
   document.addEventListener('click', (e) => {
-    if (!bubble.contains(e.target)) hideTooltip();
+    if (!bubble.contains(e.target) && !e.target.closest('.has-tooltip')) hideTooltip();
   });
+  backdrop.addEventListener('click', hideTooltip);
 
   window.addEventListener('scroll', () => { if(activeTarget) positionTooltip(activeTarget); }, {passive:true});
   window.addEventListener('resize', () => { if(activeTarget) positionTooltip(activeTarget); }, {passive:true});
