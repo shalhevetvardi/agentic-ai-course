@@ -562,11 +562,12 @@ nav{
   position:fixed;
   pointer-events:none;
   z-index:999997;
-  font-size:30px;
+  font-size:36px;
   line-height:1;
   display:none;
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.7));
 }
+#click-cursor-hint.hidden { display:none !important; }
 #click-cursor-hint.arriving { display:block; animation: cursor-arrive 0.35s ease-out forwards; }
 #click-cursor-hint.clicking { display:block; animation: cursor-click 0.25s ease-in-out; }
 #click-cursor-hint.leaving  { display:block; animation: cursor-leave 0.25s ease-in forwards; }
@@ -1090,8 +1091,9 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
 
   function moveCursorTo(el, cb) {
     const rect = el.getBoundingClientRect();
-    cursor.style.left = (rect.left + rect.width * 0.3 - 14) + 'px';
-    cursor.style.top  = (rect.top - 18) + 'px';
+    cursor.style.left = (rect.left + rect.width * 0.3 - 18) + 'px';
+    cursor.style.top  = (rect.top - 22) + 'px';
+    cursor.style.removeProperty('display');
     cursor.className = 'arriving';
     setTimeout(() => {
       cursor.className = 'clicking';
@@ -1099,7 +1101,7 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
       el.addEventListener('animationend', () => el.classList.remove('hint-pulse'), {once:true});
       setTimeout(() => {
         cursor.className = 'leaving';
-        setTimeout(() => { cursor.className = ''; cursor.style.display = 'none'; if(cb) cb(); }, 280);
+        setTimeout(() => { cursor.className = 'hidden'; if(cb) cb(); }, 280);
       }, 350);
     }, 380);
   }
@@ -1115,7 +1117,7 @@ document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => 
     if (fired || !entries[0].isIntersecting) return;
     fired = true;
     const terms = Array.from(timeline.querySelectorAll('.has-tooltip')).slice(0, 4);
-    cursor.style.display = 'none';
+    cursor.className = 'hidden';
     setTimeout(() => runSequence(terms, 0), 1000);
     hintObs.disconnect();
   }, {threshold: 0.25});
