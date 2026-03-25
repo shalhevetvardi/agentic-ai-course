@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>קורס AI מתקדמים — רשימת המתנה | אִימפּרוּב</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f172a;
+  --card:rgba(30,41,59,0.7);
+  --card-border:rgba(255,255,255,0.15);
+  --card-hover-border:rgba(255,255,255,0.22);
+  --text:#e2e8f0;
+  --text-sub:#94a3b8;
+  --text-muted:#64748b;
+  --hover-glow:rgba(56,130,220,0.18);
+  --hover-border:rgba(80,150,230,0.32);
+  --focus-ring:rgba(80,150,230,0.5);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Rubik',sans-serif;
+  background:var(--bg);
+  background-image:linear-gradient(135deg,#1e3a5f 0%,#0f172a 40%,#162040 100%);
+  background-attachment:fixed;
+  color:var(--text);
+  direction:rtl;
+  overflow-x:hidden;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:256px 256px;
+}
+
+/* FOCUS STATES */
+:focus-visible{
+  outline:2px solid var(--focus-ring);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* NAV — floating */
+nav{
+  position:fixed;top:10px;left:16px;right:16px;z-index:100;
+  background:rgba(15,23,42,0.85);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:16px;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:14px}
+.nav-brand{
+  font-size:24px;font-weight:700;color:#fff;
+  letter-spacing:-0.5px;
+}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{
+  color:var(--text-muted);font-size:14px;text-decoration:none;font-weight:400;
+  transition:color .2s;cursor:pointer;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  color:var(--text) !important;font-weight:500;font-size:14px;
+  padding:10px 24px;border-radius:12px;
+  transition:all .3s;cursor:pointer;
+}
+.nav-cta:hover{
+  background:rgba(37,211,102,0.15);border-color:rgba(37,211,102,0.3);
+  color:#fff !important;box-shadow:0 0 20px rgba(37,211,102,0.1);
+}
+.nav-cta:active{background:rgba(37,211,102,0.2)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:130px 24px 80px;
+  position:relative;
+}
+.hero-glow{
+  position:absolute;top:8%;left:50%;transform:translateX(-50%);
+  width:900px;height:900px;
+  background:radial-gradient(circle,rgba(30,58,95,0.25) 0%,transparent 55%);
+  pointer-events:none;
+}
+
+.hero-logos{
+  display:flex;align-items:flex-end;gap:32px;
+  margin-bottom:56px;
+}
+.hero-logos .aimprove-logo{height:140px;object-fit:contain}
+.hero-logos .x-mark{
+  font-size:40px;color:rgba(255,255,255,0.5);font-weight:300;
+  line-height:1;align-self:center;
+}
+.claude-logo-img{
+  height:140px;
+  object-fit:contain;
+}
+
+.hero-eyebrow{
+  font-size:clamp(13px,1.4vw,16px);
+  font-weight:500;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:rgba(56,130,220,0.8);
+  margin-bottom:16px;
+  padding:6px 18px;
+  border:1px solid rgba(56,130,220,0.25);
+  border-radius:20px;
+  display:inline-block;
+}
+.hero h1{
+  font-size:clamp(38px,6.5vw,72px);
+  font-weight:800;
+  line-height:1.1;
+  letter-spacing:-2px;
+  margin-bottom:28px;
+  max-width:860px;
+}
+.hero .sub{
+  font-size:clamp(17px,2vw,20px);
+  color:var(--text-sub);
+  line-height:1.8;
+  max-width:580px;
+  margin:0 auto;
+  font-weight:400;
+}
+
+/* SECTION */
+.section{padding:100px 0;position:relative;z-index:1}
+.container{max-width:1080px;margin:0 auto;padding:0 24px}
+.section-title{
+  font-size:clamp(28px,4vw,48px);font-weight:800;
+  letter-spacing:-1.5px;line-height:1.15;margin-bottom:20px;
+}
+.section-sub{font-size:18px;color:var(--text-sub);line-height:1.8;font-weight:400}
+
+/* GLASS CARD */
+.glass{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:20px;
+  transition:all .4s cubic-bezier(.4,0,.2,1);
+  position:relative;overflow:hidden;
+}
+.glass::before{
+  content:'';position:absolute;inset:0;
+  border-radius:20px;
+  background:radial-gradient(circle at 50% 50%,var(--hover-glow),transparent 70%);
+  opacity:0;transition:opacity .4s;
+  pointer-events:none;
+}
+
+/* WHATSAPP-STYLE CHAT BUBBLES */
+.bubble-grid{
+  display:flex;flex-direction:column;gap:20px;
+  max-width:640px;margin:0 auto;padding:0 24px;
+}
+.chat-row{
+  display:flex;align-items:flex-end;gap:10px;
+}
+.chat-row.right{flex-direction:row-reverse}
+
+.chat-avatar{
+  width:36px;height:36px;min-width:36px;
+  border-radius:50%;
+  background:rgba(56,130,220,0.15);
+  border:1px solid rgba(56,130,220,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:rgba(255,255,255,0.5);
+  margin-bottom:4px;
+}
+
+.bubble{
+  position:relative;
+  padding:12px 16px 10px;
+  max-width:82%;
+  border-radius:18px;
+}
+.chat-row.left .bubble{border-bottom-right-radius:4px}
+.chat-row.right .bubble{border-bottom-left-radius:4px}
+
+.chat-row.left .bubble{
+  background:rgba(40,52,68,0.75);
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+}
+.chat-row.right .bubble{
+  background:rgba(31,68,115,0.55);
+  border:1px solid rgba(56,130,220,0.2);
+  backdrop-filter:blur(12px);
+}
+
+.bubble p{
+  font-size:15px;line-height:1.7;font-weight:400;
+  color:rgba(255,255,255,0.88);
+  margin:0;
+}
+.bubble-time{
+  font-size:11px;color:rgba(255,255,255,0.3);
+  text-align:left;margin-top:4px;display:block;
+}
+.chat-row.right .bubble-time{text-align:right}
+
+/* STAGGERED BUBBLE ANIMATIONS */
+.chat-row.reveal-bubble{
+  opacity:0;
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);
+}
+.chat-row.left.reveal-bubble{transform:translateX(-30px)}
+.chat-row.right.reveal-bubble{transform:translateX(30px)}
+.chat-row.reveal-bubble.visible{opacity:1;transform:translateX(0)}
+.chat-row:nth-child(2).reveal-bubble{transition-delay:.2s}
+.chat-row:nth-child(3).reveal-bubble{transition-delay:.4s}
+
+/* CLOSING LINE */
+.closing-line{
+  opacity:0;transform:translateY(16px) scale(0.96);
+  transition:opacity .7s cubic-bezier(.4,0,.2,1) .3s,transform .7s cubic-bezier(.4,0,.2,1) .3s;
+}
+.closing-line.visible{
+  opacity:1;transform:translateY(0) scale(1);
+}
+
+/* SOLUTION TIMELINE */
+.solution-subtitle{
+  font-size:clamp(16px,1.8vw,19px);color:var(--text-sub);
+  text-align:center;line-height:1.8;margin-top:12px;
+}
+.timeline{
+  position:relative;
+  max-width:760px;margin:56px auto 0;
+  padding-right:64px;
+  padding-left:12px;
+}
+.timeline::before{
+  content:'';position:absolute;
+  right:26px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,rgba(56,130,220,0.5) 0%,rgba(56,130,220,0.15) 100%);
+}
+.tl-step{
+  position:relative;
+  padding:0 0 28px 0;
+}
+.tl-step:last-child{padding-bottom:0}
+.tl-dot{
+  position:absolute;
+  right:-50px;top:10px;
+  width:40px;height:40px;
+  border-radius:50%;
+  background:rgba(15,23,42,0.95);
+  border:2px solid rgba(56,130,220,0.6);
+  box-shadow:0 0 16px rgba(56,130,220,0.2), 0 0 0 5px rgba(56,130,220,0.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;color:rgba(56,130,220,1);
+  z-index:1;
+}
+.tl-dot.pause{
+  border-color:rgba(255,255,255,0.2);
+  box-shadow:0 0 10px rgba(255,255,255,0.05), 0 0 0 4px rgba(255,255,255,0.03);
+  color:var(--text-muted);
+  font-size:12px;
+}
+.tl-card{
+  padding:32px 32px;
+  border-radius:18px;
+  background:linear-gradient(145deg, rgba(30,41,59,0.6) 0%, rgba(22,32,50,0.5) 100%);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:0 4px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition:border-color .3s, box-shadow .3s;
+  position:relative;
+}
+.tl-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  pointer-events:none;
+  border:1px solid rgba(56,130,220,0.14);
+}
+.tl-card:hover{
+  border-color:var(--hover-border);
+  box-shadow:0 12px 40px rgba(30,80,150,0.15), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.tl-card h3{
+  font-size:22px;font-weight:700;color:#fff;
+  margin-bottom:12px;letter-spacing:-0.5px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.tl-card p{
+  font-size:16px;color:var(--text-sub);line-height:1.75;
+}
+.pause-card{
+  border-color:rgba(255,255,255,0.08);
+  background:linear-gradient(145deg, rgba(20,30,45,0.4) 0%, rgba(15,23,42,0.4) 100%);
+}
+.pause-card::before{border-color:rgba(255,255,255,0.05)}
+.tag{
+  display:inline-block;
+  padding:3px 12px;font-size:12px;font-weight:500;
+  border-radius:6px;
+  background:rgba(56,130,220,0.12);
+  border:1px solid rgba(56,130,220,0.2);
+  color:rgba(56,130,220,0.9);
+  vertical-align:middle;
+  margin-right:10px;
+}
+
+/* SYLLABUS SUMMARY TAGS */
+.syllabus-summary{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-top:18px;
+}
+.syllabus-summary span{
+  font-size:13px;font-weight:500;
+  padding:5px 14px;
+  border-radius:8px;
+  background:rgba(56,130,220,0.08);
+  border:1px solid rgba(56,130,220,0.18);
+  color:rgba(56,130,220,0.85);
+  white-space:nowrap;
+  cursor:pointer;
+  transition:all .25s;
+}
+.syllabus-summary span.has-tooltip{
+  border-bottom:1px solid rgba(56,130,220,0.18);
+}
+.syllabus-summary span:hover{
+  background:rgba(56,130,220,0.18);
+  border-color:rgba(56,130,220,0.35);
+  color:rgba(56,130,220,1);
+}
+
+/* VISION — spotlight grid */
+.vision-area{overflow:hidden}
+.spotlight-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  max-width:740px;margin:0 auto;
+  padding:8px;
+}
+.spotlight-tile{
+  aspect-ratio:1;
+  border-radius:18px;
+  background:rgba(30,41,59,0.55);
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s, box-shadow .3s;
+  cursor:default;
+  --spot-color: rgba(80,150,230,0);
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+.spotlight-tile::before{
+  content:'';
+  position:absolute;inset:0;
+  border-radius:inherit;
+  background:radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--spot-color), transparent 70%);
+  transition:background .12s;
+  pointer-events:none;
+}
+.spotlight-tile.lit{
+  border-color:rgba(80,150,230,0.35);
+  box-shadow:0 0 20px rgba(56,130,220,0.08), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.spotlight-tile img{
+  width:100%;height:100%;object-fit:contain;
+  position:relative;z-index:1;
+  filter:brightness(0.85) saturate(0.9);
+  transition:filter .3s;
+}
+.spotlight-tile.lit img{filter:brightness(1) saturate(1.05)}
+
+.vision-text-below{
+  max-width:620px;margin:0 auto;text-align:center;
+}
+.vision-text-below p{
+  font-size:clamp(17px,2vw,20px);
+  color:var(--text-sub);
+  line-height:1.8;
+}
+
+/* SOLUTION OUTCOME */
+.solution-outcome{
+  margin-top:48px;
+  padding:28px 32px;
+  border-radius:16px;
+  background:rgba(56,130,220,0.06);
+  border:1px solid rgba(56,130,220,0.18);
+  max-width:760px;margin-left:auto;margin-right:auto;
+  margin-top:48px;
+}
+.solution-outcome p{font-size:16px;color:var(--text-sub);line-height:1.8}
+.solution-outcome strong{color:var(--text)}
+
+/* BTN */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.18);
+  color:#fff;font-family:'Rubik';font-weight:600;font-size:17px;
+  padding:16px 40px;border-radius:14px;
+  cursor:pointer;text-decoration:none;
+  transition:all .3s;
+}
+.btn:hover{
+  background:rgba(56,130,220,0.2);
+  border-color:rgba(80,150,230,0.4);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(56,130,220,0.18);
+}
+.btn:active{background:rgba(56,130,220,0.22);transform:translateY(0)}
+
+/* ─────────── WAITLIST SECTION ─────────── */
+.waitlist-section{
+  text-align:center;
+  padding:80px 24px 100px;
+  position:relative;
+  z-index:1;
+}
+.waitlist-inner{
+  max-width:620px;
+  margin:0 auto;
+}
+
+/* Status pill */
+.waitlist-status{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:9px 22px;
+  border:1px solid rgba(245,158,11,0.22);
+  border-radius:100px;
+  background:rgba(245,158,11,0.06);
+  font-size:14px;font-weight:500;
+  color:rgba(245,158,11,0.85);
+  margin-bottom:36px;
+}
+.status-dot{
+  width:8px;height:8px;min-width:8px;
+  border-radius:50%;
+  background:#f59e0b;
+  box-shadow:0 0 8px rgba(245,158,11,0.6);
+  animation:pulse-amber 2s ease-in-out infinite;
+}
+@keyframes pulse-amber{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.55;transform:scale(0.82)}
+}
+
+/* Main headline */
+.waitlist-headline{
+  font-size:clamp(28px,4.5vw,52px);
+  font-weight:800;
+  letter-spacing:-1.5px;
+  line-height:1.15;
+  color:#fff;
+  margin-bottom:44px;
+}
+
+/* WhatsApp CTA button */
+.btn-wa{
+  display:inline-flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,#25d366 0%,#128c7e 100%);
+  border:1px solid rgba(37,211,102,0.3);
+  color:#fff !important;
+  font-family:'Rubik',sans-serif;
+  font-weight:700;
+  font-size:clamp(16px,1.8vw,19px);
+  padding:18px 44px;
+  border-radius:14px;
+  cursor:pointer;
+  text-decoration:none;
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 4px 20px rgba(37,211,102,0.2);
+  position:relative;
+  overflow:hidden;
+}
+.btn-wa::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 60%);
+  pointer-events:none;
+}
+.btn-wa:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(37,211,102,0.35);
+  border-color:rgba(37,211,102,0.5);
+}
+.btn-wa:active{transform:translateY(0);box-shadow:0 4px 20px rgba(37,211,102,0.2)}
+.btn-wa svg{flex-shrink:0}
+
+
+/* Divider line above waitlist */
+.waitlist-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(37,211,102,0.15) 30%,rgba(37,211,102,0.15) 70%,transparent);
+  max-width:480px;
+  margin:0 auto 72px;
+}
+
+/* REVEAL ANIMATIONS */
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* TOOLTIPS */
+.has-tooltip{
+  cursor:pointer;
+  border-bottom:1.5px dashed rgba(56,130,220,0.4);
+  color:inherit;
+  transition:color .2s, border-color .2s;
+}
+.has-tooltip:hover{color:rgba(56,130,220,1);border-color:rgba(56,130,220,0.9)}
+
+#tooltip-bubble{
+  display:none;
+  position:fixed;
+  z-index:9999;
+  max-width:280px;min-width:200px;
+  background:rgba(15,23,40,0.97);
+  border:1px solid rgba(56,130,220,0.35);
+  border-radius:12px;
+  padding:14px 16px 12px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  pointer-events:auto;
+}
+#tooltip-bubble.visible{display:block}
+.tooltip-term{
+  font-size:12px;font-weight:700;
+  color:rgba(56,130,220,0.85);
+  letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.tooltip-text{
+  font-size:14px;color:rgba(255,255,255,0.82);
+  line-height:1.65;font-family:inherit;
+}
+.tooltip-close{
+  position:absolute;top:8px;left:10px;
+  background:none;border:none;
+  font-size:16px;color:rgba(255,255,255,0.3);
+  cursor:pointer;padding:0;line-height:1;
+  transition:color .2s;
+}
+.tooltip-close:hover{color:rgba(255,255,255,0.7)}
+
+/* FOOTER */
+footer{
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding:40px 24px;
+  text-align:center;
+  position:relative;z-index:1;
+}
+footer p{
+  font-size:14px;
+  color:var(--text-muted);
+}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+
+@media(max-width:768px){
+  nav{
+    padding:10px 16px;
+    top:6px;left:10px;right:10px;
+  }
+  .nav-brand{font-size:20px}
+  .nav-links{gap:14px}
+  .nav-cta{padding:8px 16px;font-size:13px}
+
+  .hero{
+    padding:110px 20px 60px;
+    min-height:auto;
+  }
+  .hero-logos{gap:18px;margin-bottom:36px}
+  .hero-logos .aimprove-logo,
+  .claude-logo-img{height:80px}
+  .hero-logos .x-mark{font-size:28px}
+  .hero h1{
+    font-size:clamp(30px,8vw,44px);
+    letter-spacing:-1px;
+    margin-bottom:20px;
+  }
+
+  .section{padding:60px 0}
+  .section-title{
+    font-size:clamp(24px,6vw,36px);
+    letter-spacing:-1px;
+  }
+  .section-sub{font-size:16px}
+
+  .bubble-grid{padding:0 16px}
+  .bubble{max-width:90%}
+  .bubble p{font-size:14px}
+
+  .spotlight-grid{
+    grid-template-columns:repeat(3,1fr);
+    max-width:320px;
+    gap:10px;
+  }
+  .spotlight-tile{padding:14px;border-radius:14px}
+
+  .vision-text-below p{font-size:16px}
+
+  .timeline{
+    padding-right:48px;
+    padding-left:8px;
+    margin-top:36px;
+  }
+  .timeline::before{right:18px}
+  .tl-dot{
+    right:-40px;
+    width:32px;height:32px;
+    font-size:13px;
+  }
+  .tl-card{padding:20px 18px;border-radius:14px}
+  .tl-card h3{font-size:18px;gap:8px}
+  .tl-card p{font-size:14px}
+
+  .syllabus-summary{gap:6px}
+  .syllabus-summary span{
+    font-size:12px;
+    padding:4px 10px;
+    white-space:normal;
+  }
+
+  .solution-outcome{
+    padding:20px 20px;
+    margin-top:32px;
+  }
+  .solution-outcome p{font-size:14px}
+
+  .waitlist-section{padding:60px 20px 80px}
+  .waitlist-headline{
+    font-size:clamp(26px,7vw,40px);
+    margin-bottom:32px;
+  }
+  .btn-wa{
+    padding:16px 28px;
+    font-size:16px;
+    gap:10px;
+  }
+  .waitlist-divider{margin-bottom:48px}
+}
+
+@media(max-width:420px){
+  nav{padding:8px 12px;border-radius:12px}
+  .nav-brand{font-size:18px}
+  .nav-links a:not(.nav-cta){display:none}
+
+  .hero{padding:100px 16px 48px}
+  .hero-logos{gap:12px;margin-bottom:28px}
+  .hero-logos .aimprove-logo,
+  .claude-logo-img{height:60px}
+  .hero-logos .x-mark{font-size:22px}
+  .hero h1{font-size:clamp(26px,8vw,36px)}
+
+  .section{padding:48px 0}
+  .container{padding:0 16px}
+
+  .bubble{max-width:95%;padding:10px 14px 8px}
+  .chat-avatar{width:28px;height:28px;min-width:28px;font-size:12px}
+
+  .spotlight-grid{
+    grid-template-columns:repeat(2,1fr);
+    max-width:240px;
+    gap:8px;
+  }
+  .spotlight-tile{padding:12px;border-radius:12px}
+
+  .timeline{padding-right:40px}
+  .timeline::before{right:14px}
+  .tl-dot{
+    right:-34px;
+    width:28px;height:28px;
+    font-size:11px;
+  }
+  .tl-dot.pause{font-size:10px}
+  .tl-card{padding:16px 14px;border-radius:12px}
+  .tl-card h3{font-size:16px}
+  .tl-card p{font-size:13px}
+  .tag{font-size:11px;padding:2px 8px}
+
+  .syllabus-summary span{font-size:11px;padding:3px 8px}
+
+  .waitlist-headline{font-size:clamp(24px,7vw,34px)}
+  .btn-wa{
+    padding:14px 24px;
+    font-size:15px;
+    width:100%;
+    justify-content:center;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV — floating -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-brand">אימפרוב</span>
+  </div>
+  <div class="nav-links">
+    <a href="#">הקורס</a>
+    <a href="#waitlist" class="nav-cta">רשימת המתנה</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div style="position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center">
+
+    <div class="hero-logos reveal">
+      <img class="aimprove-logo" src="logo-aimprove-full.png" alt="אִימפּרוּב">
+      <span class="x-mark">×</span>
+      <img class="claude-logo-img" src="logo-claude-text.png" alt="Claude">
+    </div>
+
+    <p class="hero-eyebrow reveal">קורס AI למתקדמים</p>
+
+    <h1 class="reveal">
+      לבנות עובדי AI לעסק שלכם<br>ולנהל אותם מלמעלה.
+    </h1>
+
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section" style="background:rgba(0,0,0,0.15)">
+  <div class="container reveal" style="text-align:center;margin-bottom:64px">
+    <h2 class="section-title">אתם יודעים בדיוק אילו תהליכים<br>היו צריכים לרוץ לבד.</h2>
+    <p class="section-sub" style="max-width:640px;margin:0 auto">אתם גם יודעים ש-AI כנראה יכול לעשות את זה.<br>רק אין לכם מושג מאיפה מתחילים.</p>
+  </div>
+
+  <div class="bubble-grid">
+    <div class="chat-row right reveal-bubble">
+      <div class="bubble">
+        <p>״אני עובדת עם AI כל יום. אבל אני רוצה שהוא יעבוד בשבילי בצורה אוטומטית — מבלי שאני אצטרך לדבר איתו.״</p>
+        <span class="bubble-time">09:14 ✓✓</span>
+      </div>
+      <div class="chat-avatar">👩</div>
+    </div>
+
+    <div class="chat-row left reveal-bubble">
+      <div class="chat-avatar">👨</div>
+      <div class="bubble">
+        <p>״ראיתי ריל של מישהו שבנה סוכן שעושה דברים לבד. לחצתי ׳שמור׳. מאז הסרטון יושב שם.״</p>
+        <span class="bubble-time">09:31</span>
+      </div>
+    </div>
+
+    <div class="chat-row right reveal-bubble">
+      <div class="bubble">
+        <p>״כל יום אני עושה את אותו דבר — מיילים, טבלאות, סיכומים. אני כבר לא מאמינה שאני עדיין עושה את זה ידנית.״</p>
+        <span class="bubble-time">10:02 ✓✓</span>
+      </div>
+      <div class="chat-avatar">👩</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:56px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.04)">
+    <p class="closing-line" style="font-size:clamp(20px,2.5vw,26px);color:#fff;line-height:1.8;font-weight:600">
+      נשמע מוכר?
+    </p>
+  </div>
+</section>
+
+<!-- VISION — Spotlight Grid -->
+<section class="section vision-area">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:40px">
+      <h2 class="section-title">עכשיו תדמיינו משהו אחר.</h2>
+    </div>
+
+    <div class="spotlight-grid" id="spotlightGrid">
+      <div class="spotlight-tile"><img src="logo-gmail.svg" alt="Gmail"></div>
+      <div class="spotlight-tile"><img src="logo-drive.svg" alt="Drive"></div>
+      <div class="spotlight-tile"><img src="logo-calendar.png" alt="Calendar"></div>
+      <div class="spotlight-tile"><img src="logo-excel.svg" alt="Excel"></div>
+      <div class="spotlight-tile"><img src="logo-outlook.svg" alt="Outlook"></div>
+      <div class="spotlight-tile"><img src="logo-powerpoint.svg" alt="PowerPoint"></div>
+      <div class="spotlight-tile"><img src="logo-teams.svg" alt="Teams"></div>
+      <div class="spotlight-tile"><img src="logo-monday.svg" alt="Monday"></div>
+      <div class="spotlight-tile"><img src="logo-onedrive.svg" alt="OneDrive"></div>
+      <div class="spotlight-tile"><img src="logo-canva.svg" alt="Canva"></div>
+    </div>
+
+    <div class="vision-text-below" style="margin-top:48px">
+      <p>מערכת שמחוברת לכלים שלכם. שיודעת לקרוא, לכתוב, לשלוח, לארגן.</p>
+      <p style="margin-top:10px">שמכירה אתכם. יודעת איך אתם עובדים. מה צריך להיעשות.</p>
+      <p style="margin-top:10px">ורצה כל הזמן — <strong style="color:#fff;font-weight:600">בלי שתלחצו על כלום.</strong> עשרות שעות עבודה שחוזרות אליכם. כל שבוע.</p>
+      <p style="margin-top:32px;font-size:clamp(20px,2.5vw,26px);color:#fff;font-weight:700">זה מה שתלמדו לבנות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION — THE COURSE -->
+<section class="section">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <h2 class="section-title">קורס AI למתקדמים: בניית מערכות אוטומטיות עם Claude</h2>
+      <p class="solution-subtitle">8 מפגשי לייב. תוצרים פרקטיים לאורך כל הדרך.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-step reveal">
+        <div class="tl-dot">א׳</div>
+        <div class="tl-card">
+          <h3>חלק א׳ — <span class="has-tooltip" data-term="האקוסיסטם של Claude" data-def="Claude הוא לא כלי אחד — הוא משפחה של כלים שעובדים ביחד: Projects, Cowork, Code, MCP, Skills. כשלומדים את כולם ואיך לחבר ביניהם — מקבלים מערכת שלמה שעובדת בשבילכם">האקו סיסטם של קלוד</span> <span class="tag">4 מפגשים</span></h3>
+          <p>לומדים את כל מה ש-Claude יודע לעשות — ומחברים את זה לעבודה שלכם. סביבות עבודה מותאמות. עיבוד קבצים. בניית כלים בלי קוד. חיבור לכלים שאתם כבר עובדים איתם כל יום.</p>
+          <p style="margin-top:12px">אחרי חלק א׳ — אתם שוחים באקוסיסטם של Claude. מכירים כל כלי, יודעים מה הוא עושה בשבילכם, ויכולים לזהות בשנייה מה הפתרון הנכון לכל משימה.</p>
+
+          <div class="syllabus-summary">
+            <span class="has-tooltip" data-term="Context Engineering" data-def="ללמד את Claude מי אתם, איך אתם עובדים, ומה חשוב לכם — ככה שכל שיחה איתו מתחילה מנקודה מתקדמת ולא מאפס. זה הרבה יותר מפרומפטינג — זו בניית סביבת עבודה שלמה.">Context Engineering</span>
+            <span class="has-tooltip" data-term="Claude Projects" data-def="סביבת עבודה קבועה ב-Claude עם הוראות, ידע ודוגמאות — כמו חדר שמחכה לכם מוכן ומוגדר. נכנסים, והוא כבר יודע מה לעשות.">Claude Projects</span>
+            <span class="has-tooltip" data-term="MCP — חיבור לכלים" data-def="חיבור Claude לכלים שאתם כבר עובדים איתם — מייל, יומן, Notion, Drive ועוד עשרות. הוא קורא, כותב ושולח ישירות — בלי העתק-הדבק.">MCP — חיבור לכלים</span>
+            <span class="has-tooltip" data-term="Claude Cowork" data-def="שולחן עבודה שבו Claude עובד ישירות על הקבצים שלכם — קורא, כותב, מעבד, מארגן. בלי לצאת מהתיקייה, בלי לגרור קבצים.">Claude Cowork</span>
+            <span class="has-tooltip" data-term="Claude Code + Vibe Coding" data-def="לתאר מה אתם רוצים במילים — ו-Claude בונה את זה. דף נחיתה, כלי עיבוד נתונים, דשבורד. בלי לכתוב שורת קוד אחת.">Claude Code + Vibe Coding</span>
+            <span class="has-tooltip" data-term="Skills + Context Management" data-def="הוראות עבודה שכותבים פעם אחת — ו-Claude מפעיל אותן לבד שוב ושוב. כמו להכשיר עובד: מלמדים אותו משימה, ומשם הוא עושה אותה בלי שמסבירים מחדש.">Skills + Context Management</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-step reveal">
+        <div class="tl-dot pause">⏸</div>
+        <div class="tl-card pause-card">
+          <h3 style="font-size:16px;font-weight:600;color:var(--text-sub)">הפסקה — כשבועיים</h3>
+          <p>בין החלקים בוחרים תהליך אמיתי מהעבודה — תהליך שרוצים שירוץ לבד. הצוות שלנו עוזר לבחור, לאשר ולהכין את החומרים.</p>
+        </div>
+      </div>
+
+      <div class="tl-step reveal">
+        <div class="tl-dot">ב׳</div>
+        <div class="tl-card">
+          <h3>חלק ב׳ — <span class="has-tooltip" data-term="מערכת אג׳נטית" data-def="כמה סוכני AI שעובדים ביחד — כל אחד מומחה במשהו אחר, ויודעים להעביר עבודה מאחד לשני. לא שיחה — מערכת שרצה לבד">מערכת אג׳נטית</span> <span class="tag">4 מפגשים</span></h3>
+          <p>לוקחים את מה שלמדתם ובונים מערכת AI שלמה — על תהליך יומיומי אמיתי מהעסק שלכם. לא סוכן בודד. מערכת שבה כמה סוכנים עובדים ביחד — כל אחד מומחה במשהו אחר, יודעים להעביר עבודה מאחד לשני.</p>
+          <p style="margin-top:12px">בסוף — תהליכים אוטומטיים שרצים לבד, בלי שנוגעים בהם. בנויים על הדברים שאתם עושים כל יום.</p>
+
+          <div class="syllabus-summary">
+            <span class="has-tooltip" data-term="אפיון סוכן + ארכיטקטורת ידע" data-def="לפרק תהליך עסקי לרכיבים ולתכנן סוכן AI שמטפל בכל חלק. מה הוא צריך לדעת, מה נכנס, מה יוצא — ואיך מכינים לו את הידע כדי שיעבוד נכון.">אפיון סוכן + ארכיטקטורת ידע</span>
+            <span class="has-tooltip" data-term="מערכות מרובות סוכנים" data-def="לא סוכן אחד — מערכת שלמה. כמה סוכני AI שעובדים ביחד, כל אחד מומחה במשהו אחר, ויודעים להעביר עבודה מאחד לשני. לא שיחה — מערכת שרצה לבד.">מערכות מרובות סוכנים</span>
+            <span class="has-tooltip" data-term="Scheduled Tasks — אוטומציה מלאה" data-def="תהליכים שרצים לבד לפי לוח זמנים — כל יום, כל שבוע, בלי שנוגעים. לדוגמה: הקלטת זום ← תמלול ← סיכום ← Notion. הכל אוטומטי.">Scheduled Tasks — אוטומציה מלאה</span>
+            <span class="has-tooltip" data-term="Vibe Coding + שילובים מתקדמים" data-def="לבנות כלי עסקי שלם רק מתיאור במילים — דשבורד, אתר, כלי עיבוד. ולחבר אותו למערכת: הסוכן מפעיל אוטומציות, האוטומציות מדברות עם הכלים שלכם.">Vibe Coding + שילובים מתקדמים</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="solution-outcome reveal">
+      <p><strong>עם מה תצאו מהקורס?</strong></p>
+      <p style="margin-top:8px">מערכות AI שעובדות על התהליכים האמיתיים מהעבודה שלכם — סוכנים שמחוברים לכלים שלכם, יודעים להעביר עבודה מאחד לשני, ורצים לבד.</p>
+      <p style="margin-top:8px"><strong>חיסכון אמיתי של עשרות שעות בשבוע</strong> — לא תיאורטי, לא "אולי בעתיד". מערכות שרצות מהיום הראשון.</p>
+      <p style="margin-top:8px"><strong>והכי חשוב — את הידע לבנות עוד כאלה, לבד, בלי לחכות לאף אחד.</strong></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- WAITLIST CTA -->
+<section id="waitlist" class="waitlist-section">
+  <div class="waitlist-divider"></div>
+  <div class="waitlist-inner reveal">
+
+    <div class="waitlist-status">
+      <span class="status-dot"></span>
+      ההרשמה עדיין לא נפתחה
+    </div>
+
+    <h2 class="waitlist-headline">
+      אני רוצה שדברים<br>יעבדו לבד.
+    </h2>
+
+
+
+    <a
+      href="https://wa.me/972515079762?text=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%93%D7%91%D7%A8%D7%99%D7%9D%20%D7%99%D7%A2%D7%91%D7%93%D7%95%20%D7%9C%D7%91%D7%93%20-%20%D7%AA%D7%A2%D7%93%D7%9B%D7%A0%D7%99%20%D7%90%D7%95%D7%AA%D7%99%20%D7%9B%D7%A9%D7%A0%D7%A4%D7%AA%D7%97%D7%AA%20%D7%94%D7%94%D7%A8%D7%A9%D7%9E%D7%94"
+      class="btn-wa"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.570-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="currentColor"/>
+      </svg>
+      עדכנו אותי כשנפתחת ההרשמה
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 אִימפּרוּב. כל הזכויות שמורות.</p>
+</footer>
+
+<!-- TOOLTIP BUBBLE -->
+<div id="tooltip-bubble">
+  <button class="tooltip-close" aria-label="סגור">×</button>
+  <div class="tooltip-term"></div>
+  <div class="tooltip-text"></div>
+</div>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2, rootMargin: '0px 0px -120px 0px' });
+
+document.querySelectorAll('.reveal,.reveal-bubble,.closing-line').forEach(el => io.observe(el));
+
+// Spotlight Grid — smooth entrance + shared spotlight
+(function(){
+  const grid = document.getElementById('spotlightGrid');
+  if(!grid || !window.gsap) return;
+
+  const tiles = grid.querySelectorAll('.spotlight-tile');
+
+  const vw = window.innerWidth;
+  const directions = [
+    { x: -vw*0.6, y: -80 },
+    { x: -vw*0.3, y: -300 },
+    { x: 0,       y: -350 },
+    { x: vw*0.3,  y: -300 },
+    { x: vw*0.6,  y: -80 },
+    { x: -vw*0.6, y: 80 },
+    { x: -vw*0.3, y: 300 },
+    { x: 0,       y: 350 },
+    { x: vw*0.3,  y: 300 },
+    { x: vw*0.6,  y: 80 },
+  ];
+
+  tiles.forEach(tile => { tile.style.opacity = '0'; });
+
+  function animateIn(){
+    tiles.forEach((tile, i) => {
+      const dir = directions[i];
+      gsap.fromTo(tile,
+        { x: dir.x, y: dir.y, opacity: 0, scale: 0.7 },
+        {
+          x: 0, y: 0, opacity: 1, scale: 1,
+          duration: 1,
+          delay: 0.1 + i * 0.07,
+          ease: 'power2.out',
+          onComplete: function(){ tile.style.transform = ''; }
+        }
+      );
+    });
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ animateIn(); obs.unobserve(grid); }
+    });
+  }, { threshold: 0.25, rootMargin: '0px 0px -100px 0px' });
+  obs.observe(grid);
+
+  grid.addEventListener('mousemove', (e) => {
+    tiles.forEach(tile => {
+      const rect = tile.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+      const radius = 200;
+      const localX = e.clientX - rect.left;
+      const localY = e.clientY - rect.top;
+      const pctX = (localX / rect.width * 100);
+      const pctY = (localY / rect.height * 100);
+      tile.style.setProperty('--mouse-x', pctX + '%');
+      tile.style.setProperty('--mouse-y', pctY + '%');
+      if(dist < radius){
+        const intensity = 1 - (dist / radius);
+        tile.style.setProperty('--spot-color', `rgba(80,150,230,${(intensity * 0.35).toFixed(2)})`);
+        tile.classList.add('lit');
+      } else {
+        tile.classList.remove('lit');
+        tile.style.setProperty('--spot-color', 'rgba(80,150,230,0)');
+      }
+    });
+  });
+
+  grid.addEventListener('mouseleave', () => {
+    tiles.forEach(tile => {
+      tile.classList.remove('lit');
+      tile.style.setProperty('--spot-color', 'rgba(80,150,230,0)');
+    });
+  });
+})();
+
+// TOOLTIP — click to open/close
+(function(){
+  const bubble = document.getElementById('tooltip-bubble');
+  let activeTarget = null;
+
+  function showTooltip(el) {
+    const term = el.getAttribute('data-term');
+    const def = el.getAttribute('data-def');
+    bubble.querySelector('.tooltip-term').textContent = term;
+    bubble.querySelector('.tooltip-text').textContent = def;
+    bubble.classList.add('visible');
+    activeTarget = el;
+    positionTooltip(el);
+  }
+
+  function hideTooltip() {
+    bubble.classList.remove('visible');
+    activeTarget = null;
+  }
+
+  function positionTooltip(el) {
+    const rect = el.getBoundingClientRect();
+    const bw = bubble.offsetWidth || 280;
+    const bh = bubble.offsetHeight || 100;
+    let top = rect.bottom + 8;
+    let left = rect.left + rect.width / 2 - bw / 2;
+    if (left < 8) left = 8;
+    if (left + bw > window.innerWidth - 8) left = window.innerWidth - bw - 8;
+    if (top + bh > window.innerHeight - 8) top = rect.top - bh - 8;
+    bubble.style.top = top + 'px';
+    bubble.style.left = left + 'px';
+  }
+
+  document.querySelectorAll('.has-tooltip').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (activeTarget === el) { hideTooltip(); return; }
+      showTooltip(el);
+    });
+  });
+
+  bubble.querySelector('.tooltip-close').addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideTooltip();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!bubble.contains(e.target)) hideTooltip();
+  });
+
+  window.addEventListener('scroll', () => { if(activeTarget) positionTooltip(activeTarget); }, {passive:true});
+  window.addEventListener('resize', () => { if(activeTarget) positionTooltip(activeTarget); }, {passive:true});
+})();
+</script>
+
+</body>
+</html>
